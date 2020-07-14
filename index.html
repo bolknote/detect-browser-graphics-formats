@@ -78,8 +78,6 @@ var checknext = function() {
         var ext = extmap[name] === undefined ? name.toLowerCase().replace(/-/g, '') : extmap[name];
         img.src = '0.' + ext;
 
-        console.log('0.'+ext);
-
         current++;
     } else {
         detectapng(function(issuccess) {
