@@ -1,0 +1,5 @@
+AddType image/vnd.ms-photo .jpegxr
+AddType image/jpeg .jpeg
+AddType image/jp2 .jpeg2000
+AddType image/x-wmf .emf
+AddType video/x-mng .mng

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<title>Browser graphics formats detect. http://bolknote.ru</title>
+<!-- Evgeny Stepanischev Mar 2013 -->
+<style>
+* {
+    font: normal 16px Menlo, monospace;
+}
+
+b {
+    color: lime;
+}
+
+i {
+    color: #a00;
+}
+
+body {
+    background: black;
+    color: white;
+}
+</style>
+Your browser IMG tag supports: 
+<span id="result"></span>
+
+<script>
+var formats = [
+    'JPEG', 'GIF', 'PNG', 'XBM', 'WEBP', 'BMP', 'SVG', 'JPEG-XR', 'TIFF', 'PDF', 'EMF', 'WMF', 'WBMP', 'JPEG-2000', 'ICO', 'MNG', 'BPG'
+];
+
+var print = function(str) {
+    document.getElementById('result').innerHTML += str;
+}
+
+var current = 0;
+var result = function(format, issuccess) {
+    return function() {
+        setTimeout(checknext, 100);
+
+        print(issuccess ?
+            '<b>' + format + '</b> ' :
+            '<i>' + format + '</i> '
+        );
+    }
+}
+
+var detectapng = function(callback) {
+    var img = new Image();
+    var canvas, ctx;
+
+    if ((canvas = document.createElement("canvas")) && (ctx = canvas.getContext("2d"))) {
+        img.onload = function () {
+            ctx.drawImage(img, 0, 0);
+            callback(ctx.getImageData(0, 0, 1, 1).data[3] === 0);
+        };
+
+        img.onerror = function() {
+            callback(false);
+        };
+
+        img.src='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAACGFjVEwAAAABAAAAAcMq2TYAAAANSURBVAiZY2BgYPgPAAEEAQB9ssjfAAAAGmZjVEwAAAAAAAAAAQAAAAEAAAAAAAAAAAD6A+gBAbNU+2sAAAARZmRBVAAAAAEImWNgYGBgAAAABQAB6MzFdgAAAABJRU5ErkJggg==';
+    } else {
+        callback(false);
+    }
+}
+
+var checknext = function() {
+    var name = formats[current];
+
+    if (name) {
+        var img = new Image();
+        img.onerror = result(name, false);
+        img.onload  = result(name, true);
+        img.src = '0.' + name.toLowerCase().replace(/-/g, '');
+
+        current++;
+    } else {
+        detectapng(function(issuccess) {
+            print(issuccess ?
+                '<b>APNG</b> ' :
+                '<i>APNG</i> '
+            );
+
+            print(' Done.');
+        });
+    }
+}
+
+checknext();
+
+</script>
