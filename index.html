@@ -27,6 +27,11 @@ var formats = [
     'JPEG', 'GIF', 'PNG', 'XBM', 'WEBP', 'BMP', 'SVG', 'JPEG-XR', 'TIFF', 'PDF', 'EMF', 'WMF', 'WBMP', 'JPEG-2000', 'ICO', 'MNG', 'BPG', 'AVIF'
 ];
 
+var extmap = {
+    'JPEG-XR': 'jxr',
+    'JPEG-2000': 'jp2'
+};
+
 var print = function(str) {
     document.getElementById('result').innerHTML += str;
 }
@@ -70,7 +75,10 @@ var checknext = function() {
         var img = new Image();
         img.onerror = result(name, false);
         img.onload  = result(name, true);
-        img.src = '0.' + name.toLowerCase().replace(/-/g, '');
+        var ext = extmap[name] === undefined ? name.toLowerCase().replace(/-/g, '') : extmap[name];
+        img.src = '0.' + ext;
+
+        console.log('0.'+ext);
 
         current++;
     } else {
