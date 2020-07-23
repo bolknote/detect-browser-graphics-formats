@@ -28,8 +28,9 @@ var formats = [
 ];
 
 var extmap = {
-    'JPEG-XR': 'jxr',
-    'JPEG-2000': 'jp2'
+    'JPEG-XR': '0.jxr',
+    'JPEG-2000': '0.jp2',
+    'AVIF': 'data:image/avif;base64,AAAAHGZ0eXBtaWYxAAAAAG1pZjFhdmlmbWlhZgAAAPNtZXRhAAAAAAAAACFoZGxyAAAAAAAAAABwaWN0AAAAAAAAAAAAAAAAAAAAAA5waXRtAAAAAAABAAAAHmlsb2MAAAAABEAAAQABAAAAAAEXAAEAAAAdAAAAKGlpbmYAAAAAAAEAAAAaaW5mZQIAAAAAAQAAYXYwMUltYWdlAAAAAHJpcHJwAAAAU2lwY28AAAAUaXNwZQAAAAAAAAABAAAAAQAAABBwYXNwAAAAAQAAAAEAAAAXYXYxQ4EADAAKCQAAAAAAffzAIAAAABBwaXhpAAAAAAMICAgAAAAXaXBtYQAAAAAAAAABAAEEAQKDhAAAACVtZGF0CgkAAAAAAH38wCAyEBAAsgAAAwAQAAAAAHlM2Ig='
 };
 
 var print = function(str) {
@@ -75,8 +76,7 @@ var checknext = function() {
         var img = new Image();
         img.onerror = result(name, false);
         img.onload  = result(name, true);
-        var ext = extmap[name] === undefined ? name.toLowerCase().replace(/-/g, '') : extmap[name];
-        img.src = '0.' + ext;
+        img.src = extmap[name] === undefined ? '0.'+name.toLowerCase().replace(/-/g, '') : extmap[name];
 
         current++;
     } else {
